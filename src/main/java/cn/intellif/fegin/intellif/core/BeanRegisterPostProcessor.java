@@ -77,8 +77,10 @@ public class BeanRegisterPostProcessor implements ImportBeanDefinitionRegistrar,
     private void registerBeanDefination(BeanDefinition beanDefinition,BeanDefinitionRegistry registry,Map<String,Object> annotationAttributes){
         if(beanDefinition instanceof GenericBeanDefinition){
             GenericBeanDefinition genericBeanDefinition = (GenericBeanDefinition) beanDefinition;
+            //这里只能调用上面的getBeanClassName调用getBeanClass会报错
             String className = genericBeanDefinition.getBeanClassName();
             genericBeanDefinition.setBeanClass(FeginInvokeFactoryBean.class);
+            //及时类上面成员变量为类对象使用类全限名也是可以的
             genericBeanDefinition.getPropertyValues().add("clazz",className);
             genericBeanDefinition.getPropertyValues().add("fallback",annotationAttributes.get("fallback"));
             genericBeanDefinition.setScope(BeanDefinition.SCOPE_SINGLETON);
